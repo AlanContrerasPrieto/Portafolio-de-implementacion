@@ -1,7 +1,12 @@
-# Momento de Retroalimentación: 
-# Módulo 2 Implementación de una técnica de aprendizaje máquina sin el uso de un framework. 
-# (Portafolio Implementación)
-# Alan Contreras Prieto - A01749667
+#!/usr/bin/env python
+# coding: utf-8
+
+# # Momento de Retroalimentación: 
+# ## Módulo 2 Implementación de una técnica de aprendizaje máquina sin el uso de un framework.
+# ## (Portafolio Implementación)
+# ### Alan Contreras Prieto - A01749667
+
+# In[20]:
 
 
 # Librerias
@@ -16,7 +21,9 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 
 
-# In[142]:
+# # Dataset
+
+# In[21]:
 
 
 data = sklearn.datasets.make_classification(
@@ -32,20 +39,22 @@ df['y'] = y
 df["y"].value_counts()
 
 
-# In[143]:
+# In[22]:
 
 
 df.describe()
 
 
-# In[144]:
+# In[23]:
 
 
 # Dividir datos en entrenamiento y  prueba
 x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.20, random_state=42)
 
 
-# In[145]:
+# # Clase Red Neuronal
+
+# In[24]:
 
 
 # Red
@@ -138,7 +147,9 @@ class RedNeuronal:
             self.biases[i] -= learning_rate * nabla_b[i]
 
 
-# In[146]:
+# # Definición Red
+
+# In[25]:
 
 
 capas = [5,       # Capa de entrada
@@ -149,7 +160,9 @@ print("Pesos iniciales (antes de entrenamiento):")
 red.show_weights()
 
 
-# In[147]:
+# ### Predicción inicial
+
+# In[26]:
 
 
 y_pred = (red.predict(x_train) >= 0.5).astype(int)  # predicciones binarizadas
@@ -168,20 +181,26 @@ plt.title("Matriz de Confusión: antes de entrenar el modelo")
 plt.show()
 
 
-# In[148]:
+# # Entrenamiento
+
+# In[27]:
 
 
 red.fit(x_train, y_train.reshape(-1, 1), epochs=1001, learning_rate=0.01)
 
 
-# In[149]:
+# In[28]:
 
 
 print("Pesos finales (despues de entrenamiento):")
 red.show_weights()
 
 
-# In[150]:
+# # Analisis de resultados
+
+# ## Modelo 1
+
+# In[29]:
 
 
 y_pred = (red.predict(x_train) >= 0.5).astype(int)  # predicciones binarizadas
@@ -200,7 +219,7 @@ plt.title("Matriz de Confusión: despues de entrenar el modelo")
 plt.show()
 
 
-# In[151]:
+# In[30]:
 
 
 y_pred = (red.predict(x_test) >= 0.5).astype(int)  # predicciones binarizadas
@@ -215,5 +234,124 @@ plt.figure(figsize=(6,4))
 sns.heatmap(cm, annot=True, fmt="d", cmap="Reds", xticklabels=[0,1], yticklabels=[0,1])
 plt.xlabel("Predicción")
 plt.ylabel("Real")
-plt.title("Matriz de Confusión: datos de prueba")
+plt.title("Matriz de Confusión: datos de prueba modelo 1")
 plt.show()
+
+
+# ## Modelo 2
+
+# In[31]:
+
+
+capas = [5,       # Capa de entrada
+       8,10,5,3,   # Capas ocultas
+       1]       # Capa de salida
+red = RedNeuronal(capas)
+red.fit(x_train, y_train.reshape(-1, 1), epochs=1001, learning_rate=0.01)
+y_pred = (red.predict(x_test) >= 0.5).astype(int)  # predicciones binarizadas
+
+# Reporte de métricas
+print("\nReporte de Clasificación:\n")
+print(classification_report(y_test, y_pred, target_names=["Clase 0", "Clase 1"]))
+
+# Crear matriz de confusión
+cm = confusion_matrix(y_test, y_pred)
+plt.figure(figsize=(6,4))
+sns.heatmap(cm, annot=True, fmt="d", cmap="Reds", xticklabels=[0,1], yticklabels=[0,1])
+plt.xlabel("Predicción")
+plt.ylabel("Real")
+plt.title("Matriz de Confusión: datos de prueba modelo 2")
+plt.show()
+
+
+# ## Modelo 3
+
+# In[32]:
+
+
+capas = [5,       # Capa de entrada
+        30,   # Capas ocultas
+        1]       # Capa de salida
+red = RedNeuronal(capas)
+red.fit(x_train, y_train.reshape(-1, 1), epochs=1001, learning_rate=0.01)
+y_pred = (red.predict(x_test) >= 0.5).astype(int)  # predicciones binarizadas
+
+# Reporte de métricas
+print("\nReporte de Clasificación:\n")
+print(classification_report(y_test, y_pred, target_names=["Clase 0", "Clase 1"]))
+
+# Crear matriz de confusión
+cm = confusion_matrix(y_test, y_pred)
+plt.figure(figsize=(6,4))
+sns.heatmap(cm, annot=True, fmt="d", cmap="Reds", xticklabels=[0,1], yticklabels=[0,1])
+plt.xlabel("Predicción")
+plt.ylabel("Real")
+plt.title("Matriz de Confusión: datos de prueba modelo 3")
+plt.show()
+
+
+# ## Modelo 4
+
+# In[33]:
+
+
+capas = [5,       # Capa de entrada
+       3,3,3,3,3,3,3,3,3,3,   # Capas ocultas
+       1]       # Capa de salida
+red = RedNeuronal(capas)
+red.fit(x_train, y_train.reshape(-1, 1), epochs=1001, learning_rate=0.01)
+y_pred = (red.predict(x_test) >= 0.5).astype(int)  # predicciones binarizadas
+
+# Reporte de métricas
+print("\nReporte de Clasificación:\n")
+print(classification_report(y_test, y_pred, target_names=["Clase 0", "Clase 1"]))
+
+# Crear matriz de confusión
+cm = confusion_matrix(y_test, y_pred)
+plt.figure(figsize=(6,4))
+sns.heatmap(cm, annot=True, fmt="d", cmap="Reds", xticklabels=[0,1], yticklabels=[0,1])
+plt.xlabel("Predicción")
+plt.ylabel("Real")
+plt.title("Matriz de Confusión: datos de prueba  modelo 4")
+plt.show()
+
+
+# ## Modelo 5
+
+# In[34]:
+
+
+capas = [5,       # Capa de entrada
+       10,10,10,10,10,   # Capas ocultas
+       1]       # Capa de salida
+red = RedNeuronal(capas)
+red.fit(x_train, y_train.reshape(-1, 1), epochs=1001, learning_rate=0.01)
+y_pred = (red.predict(x_test) >= 0.5).astype(int)  # predicciones binarizadas
+
+# Reporte de métricas
+print("\nReporte de Clasificación:\n")
+print(classification_report(y_test, y_pred, target_names=["Clase 0", "Clase 1"]))
+
+# Crear matriz de confusión
+cm = confusion_matrix(y_test, y_pred)
+plt.figure(figsize=(6,4))
+sns.heatmap(cm, annot=True, fmt="d", cmap="Reds", xticklabels=[0,1], yticklabels=[0,1])
+plt.xlabel("Predicción")
+plt.ylabel("Real")
+plt.title("Matriz de Confusión: datos de prueba  modelo 5")
+plt.show()
+
+
+# # importar a .py
+
+# In[35]:
+
+
+get_ipython().system('jupyter nbconvert --to script Practica_1.ipynb')
+
+
+# In[ ]:
+
+
+
+
